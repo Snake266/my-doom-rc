@@ -6,8 +6,8 @@
 
 ;; Some functionality uses this to identify you, e.g. GPG configuration, email
 ;; clients, file templates and snippets.
-(setq user-full-name "Georgii Baturin"
-      user-mail-address " ")
+(setq user-full-name "John Doe"
+      user-mail-address "john@doe.com")
 
 ;; Doom exposes five (optional) variables for controlling fonts in Doom. Here
 ;; are the three important ones:
@@ -25,7 +25,7 @@
 ;; There are two ways to load a theme. Both assume the theme is installed and
 ;; available. You can either set `doom-theme' or manually load a theme with the
 ;; `load-theme' function. This is the default:
-(setq doom-theme 'doom-vibrant)
+(setq doom-theme 'doom-one)
 
 ;; If you use `org' and don't want your org files in the default location below,
 ;; change `org-directory'. It must be set before org loads!
@@ -52,9 +52,6 @@
 ;;
 ;; You can also try 'gd' (or 'C-c c d') to jump to their definition and see how
 ;; they are implemented.
-
-;(setq display-line-numbers nil)
-
 ;;No auto-save only hard-core
 (setq auto-save-default nil)
 (setq make-backup-files nil)
@@ -88,7 +85,6 @@
 (eval-after-load 'company
   '(add-to-list 'company-backends 'company-irony))
 
-(require 'company-lsp)
 (push 'company-lsp company-backends)
 (push 'company-irony company-backends)
 (add-to-list 'company-backends 'company-c-headers)
@@ -114,3 +110,24 @@
 
 (autoload 'rust-mode "rust-mode" nil t)
 (add-to-list 'auto-mode-alist '("\\.rs\\'" . rust-mode))
+
+(require 'lsp-mode)
+(add-hook 'go-mode-hook #'lsp-deferred)
+
+;; Set up before-save hooks to format buffer and add/delete imports.
+;; Make sure you don't have other gofmt/goimports hooks enabled.
+(defun lsp-go-install-save-hooks ()
+  (add-hook 'before-save-hook #'lsp-format-buffer t t)
+  (add-hook 'before-save-hook #'lsp-organize-imports t t))
+(add-hook 'go-mode-hook #'lsp-go-install-save-hooks)
+
+(add-hook 'octave-mode-hook
+          '(lambda ()
+             (setq indent-tabs-mode nil)
+             (setq tab-width 4)
+             (setq indent-line-function (quote insert-tab))))
+
+;;; IRC setings
+
+;;set the nickname
+(setq erc-nick "snake266")
