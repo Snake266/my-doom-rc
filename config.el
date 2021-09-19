@@ -54,16 +54,29 @@
 ;; they are implemented.
 
 ;;No auto-save only hard-core
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;Utility
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;No autosave and no backup files
 (setq auto-save-default nil)
 (setq make-backup-files nil)
 (setq auto-save-list-file-name nil)
 
+<<<<<<< HEAD
 ;; Visual
 ;(add-to-list 'default-frame-alist '(font . "Fira Code-11"))
 (tooltip-mode -1)
 (menu-bar-mode -1)
 (tool-bar-mode -1)
 
+=======
+
+;;Run emacs as server to start faster
+(require 'server)
+(if (eq server-process nil)
+    (server-start))
+>>>>>>> 3022b7165f0dfea62ad0b4ca3f7b40d4138aa557
 
 ;;highlight expression between []{}()
 (show-paren-mode t)
@@ -72,13 +85,19 @@
 ;;hotkey to kill buffer
 (global-set-key "\C-xc" 'kill-buffer)
 
-;;Scrolling settings
+;;Scrolling settings, smoother scrolling
 (setq scroll-step 1)
 (setq scroll-margin 10)
 (setq scroll-conservatively 10000)
 
+;;More comfortable buffer swtcher
 (global-set-key "\C-xb" '+ivy/switch-buffer)
 (setq ivy-use-virtual-buffers t)
+
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;C/C++ settings
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 ;;Irony settings
 (add-hook 'c++-mode-hook 'irony-mode)
@@ -109,29 +128,33 @@
 
 (semantic-mode 1)
 
-;;Run emacs as server
-(require 'server)
-(if (eq server-process nil)
-    (server-start))
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;; Rust settings
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (setq racer-rust-src-path "/home/georgii/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library")
-
 (autoload 'rust-mode "rust-mode" nil t)
 (add-to-list 'auto-mode-alist '("\\.rs\\'" . rust-mode))
 
-(require 'lsp-mode)
-(add-hook 'go-mode-hook #'lsp-deferred)
 
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;Go settings
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(add-hook 'go-mode-hook #'lsp-deferred)
 ;; Set up before-save hooks to format buffer and add/delete imports.
 ;; Make sure you don't have other gofmt/goimports hooks enabled.
 (defun lsp-go-install-save-hooks ()
-  (add-hook 'before-save-hook #'lsp-format-buffer t t)
-  (add-hook 'before-save-hook #'lsp-organize-imports t t))
+  (add-hook 'before-save-hook #'lsp-format-buffer t t) ;;Auto-formatting buffer on save
+  (add-hook 'before-save-hook #'lsp-organize-imports t t)) ;;Delete unused imports
 (add-hook 'go-mode-hook #'lsp-go-install-save-hooks)
 
 
-;;; IRC setings
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;; IRC (ERC) setings
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;set the nickname
 (setq erc-nick "snake266")
 
