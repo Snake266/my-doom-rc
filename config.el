@@ -52,6 +52,7 @@
 ;;
 ;; You can also try 'gd' (or 'C-c c d') to jump to their definition and see how
 ;; they are implemented.
+
 ;;No auto-save only hard-core
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -62,6 +63,11 @@
 (setq make-backup-files nil)
 (setq auto-save-list-file-name nil)
 
+;; Visual
+;(add-to-list 'default-frame-alist '(font . "Fira Code-11"))
+(tooltip-mode -1)
+(menu-bar-mode -1)
+(tool-bar-mode -1)
 
 ;;Run emacs as server to start faster
 (require 'server)
@@ -140,11 +146,6 @@
   (add-hook 'before-save-hook #'lsp-organize-imports t t)) ;;Delete unused imports
 (add-hook 'go-mode-hook #'lsp-go-install-save-hooks)
 
-(add-hook 'octave-mode-hook
-          '(lambda ()
-             (setq indent-tabs-mode nil)
-             (setq tab-width 4)
-             (setq indent-line-function (quote insert-tab))))
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -152,3 +153,9 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;set the nickname
 (setq erc-nick "snake266")
+
+;;aspell settings
+(setq ispell-program-name "aspell")
+
+
+;;SLIME
